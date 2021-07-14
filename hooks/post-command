@@ -1,0 +1,41 @@
+#!/bin/bash
+set -euo pipefail
+
+# Get NEW_RELI_API_KEY from paramstore
+NR_API_KEY=$(aws ssm  get-parameter --name /platform/common/newrelic/api-key --with-decryption|jq -r ".Parameter.Value")
+
+# Exit script if New Relic key is not found
+if [[ "${NR_API_KEY}" == *"ParameterNotFound"* ]]; then
+  echo "NO New Relic API Key Found"
+  exit 0
+fi
+
+# Exit script if APP_VERSION is not found
+if [ -z "${APP_VERSION+set}" ]; then
+  APP_VERSION=$(buildkite-agent meta-data get "application_version" --default "NA")
+  if [[ "${APP_VERSION}" == "NA" ]]; then
+    echo "NO APP_VERSION Found. Set 'APP_VERSION' environment variable or 'application_version' buildkite meta-data key"
+    exit 0
+  fi
+fi
+
+# Apply to new relic app id
+NR_APP_ID="$BUILDKITE_PLUGIN_NR_DEPLOYMENT_MARKER_NR_APP_ID"
+
+echo "+++ :newrelic: Publishing deployment marker to NewRelic AppID: ${NR_APP_ID} - ${APP_VERSION}"
+DATE_NOW=$(date -u +"%Y-%m-%dT%H:%M:%SZ")
+
+curl -s -X POST "https://api.newrelic.com/v2/applications/${NR_APP_ID}/deployments.json" \
+-H "Api-Key:${NR_API_KEY}" \
+-i \
+-H "Content-Type: application/json" \
+-d \
+'{
+  "deployment": {
+    "revision": "'"${APP_VERSION}"'",
+    "changelog": "'"Buildkite pipeline: ${BUILDKITE_PIPELINE_NAME}\nBuildNumber: ${BUILDKITE_BUILD_NUMBER}\nBuildkite Pipeline Link: ${BUILDKITE_BUILD_URL}"'",
+    "description": "'"${BUILDKITE_MESSAGE}"'",
+    "user": "'"${BUILDKITE_BUILD_CREATOR_EMAIL}"'",
+    "timestamp": "'"${DATE_NOW}"'"
+  }
+}' >> /dev/null

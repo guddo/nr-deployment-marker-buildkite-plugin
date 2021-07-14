@@ -1,0 +1,9 @@
+name: New Relic Deployment Marker
+description: Publishes a New Relic Deployment Marker
+author: https://github.com/dilankaapt
+requirements: []
+configuration:
+  properties:
+    nr_app_id:
+      type: string
+  additionalProperties: false
