@@ -1,12 +1,14 @@
 #!/bin/bash
 set -euo pipefail
 
+echo "==Start Runnning nr-deployment-marker buildkite-plugin"
+
 # Get NEW_RELI_API_KEY from paramstore
 NR_API_KEY=$(aws ssm  get-parameter --name /platform/common/newrelic/api-key --with-decryption|jq -r ".Parameter.Value")
 
 # Exit script if New Relic key is not found
 if [[ "${NR_API_KEY}" == *"ParameterNotFound"* ]]; then
-  echo "NO New Relic API Key Found"
+  echo "No New Relic API Key Found"
   exit 0
 fi
 
