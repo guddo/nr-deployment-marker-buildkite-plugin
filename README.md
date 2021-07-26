@@ -1,6 +1,8 @@
 # New Relic Deployment Marker Buildkite Plugin
 Buildkite Plugin that publishes a New Relic Deployment Marker
 
+Deployment markers on you application deployments allow for quick troubleshooting in New Relic post a deployment.
+
 Runs the New Relic Deployment Marker post command described 
 [here](https://docs.newrelic.com/docs/apm/new-relic-apm/maintenance/record-monitor-deployments/#post-deployment)
 
