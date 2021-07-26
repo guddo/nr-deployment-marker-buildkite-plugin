@@ -15,7 +15,7 @@ steps:
   command:
   - <some deployment command>
   plugins:
-  - dilankaapt/nr-deployment-marker:
+  - ssh://git@github.com/AfterpayTouch/platform-nr-deployment-marker-buildkite-plugin.git#v1.0.0:
       nr_app_id: '<new relic app id>'
 ```
 
