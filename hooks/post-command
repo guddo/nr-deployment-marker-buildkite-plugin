@@ -6,6 +6,9 @@ echo "==Start Runnning nr-deployment-marker buildkite-plugin"
 # Get NEW_RELIC_API_KEY from paramstore
 NR_API_KEY=$NEW_RELIC_API_KEY
 
+# Get ACTIVATOR_VERSION
+APP_VERSION=$ACTIVATOR_VERSION
+
 # Exit script if New Relic key is not found
 if [[ "${NR_API_KEY}" == *"ParameterNotFound"* ]]; then
   echo "No New Relic API Key Found"
