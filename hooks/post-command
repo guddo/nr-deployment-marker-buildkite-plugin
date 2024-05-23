@@ -12,8 +12,7 @@ if [[ "${NR_API_KEY}" == *"ParameterNotFound"* ]]; then
   exit 0
 fi
 
-# Apply to new relic app id
-APP_VERSION="$BUILDKITE_PLUGIN_NR_DEPLOYMENT_MARKER_ACTIVATOR_VERSION"
+#APP_VERSION="$BUILDKITE_PLUGIN_NR_DEPLOYMENT_MARKER_ACTIVATOR_VERSION"
 
 # Exit script if APP_VERSION is not found
 if [ -z "${APP_VERSION+set}" ]; then
