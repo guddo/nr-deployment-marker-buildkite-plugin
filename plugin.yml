@@ -6,4 +6,6 @@ configuration:
   properties:
     nr_app_id:
       type: string
+    activator_version:
+      type: string
   additionalProperties: false
